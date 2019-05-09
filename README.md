@@ -246,6 +246,8 @@ torch.save(mnet.state_dict(),'DNN_model.pth')
 
 # Part3 Test and Comparation
 ## Step1 Build Test Dataset
+Test dataset was collected from the warframe market too. It contains 6 kinds of products with 535 rows of data.
+Import the data from 'warframe_Test.csv' as table, and select 7 features to predict 2 labels.
 ```pythonscript
 testing = pd.read_csv('Warframe_Test.csv')
 Test=Table.from_df(testing)
@@ -271,7 +273,7 @@ for i in range(534):
 
 ```
 ## Step2 Test DNN Model
-
+Import DNN model from the file we stored before.
 ```pythonscript
 class Net(nn.Module):
     def __init__(self):
@@ -287,7 +289,7 @@ class Net(nn.Module):
 mnet=Net()
 mnet.load_state_dict(torch.load('DNNmodel.pth'))
 ```
-
+Generate prediction of avg_price and the real avg_price as 2 arrays.
 ```pythonscript
 prediction=np.array([])
 real=np.array([])
@@ -300,7 +302,7 @@ for i in range(534):
     prediction=np.append(prediction,output[j])
     real=np.append(real,labels_test[k][j])
 ```
-
+Select the prediction of product 'Frost' to show the plot of comparation.
 ```pythonscript
 plt.title('DNN_Frost')
 plt.xlabel('Date')
@@ -317,12 +319,16 @@ plt.show()
 ```
 
 ## Step3 Test SVR Model
+Support vector machines (SVMs) are a set of supervised learning methods used for classification, regression and outliers detection.
+And SVR is one kind of SVM called Support Vector Machine for Regression. 
+It is more like a linear regression way to do machine learning. 
 
+We will use the result of SVR to compare the prediction from DNN. First, import the SVR module.
 ```pythonscript
 from sklearn.svm import LinearSVR
 from sklearn.datasets import make_regression
 ```
-
+Generate the training set of SVR, and do the prediction.
 ```pythonscript
 regr = LinearSVR(random_state=0, tol=1e-5)
 features_training, labels_training = make_regression(n_features=7, random_state=0)
@@ -330,6 +336,7 @@ regr.fit(features_training, labels_training)
 
 prediction_svr=regr.predict(features_test)
 ```
+Show the plot of SVR's result.
 
 ```pythonscript
 plt.title('SVR_Frost')
@@ -345,4 +352,3 @@ plt.legend()
 plt.grid(True,linestyle = "-",color = 'gray' ,linewidth = '0.15',axis='both')
 plt.show()
 ```
-
