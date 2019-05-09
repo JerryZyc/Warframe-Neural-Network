@@ -30,7 +30,7 @@ trade = s[4].text
 ```
 Then, the trading information is download as a text file.
 
-##Step2 Data Transform
+## Step2 Data Transform
 
 The text is a json file. We should transform it to a dictionary to read the content. Let's import mudole to deal with it.
 
