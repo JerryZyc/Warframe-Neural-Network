@@ -1,13 +1,13 @@
-#Data Sciecne Final Project
+# Data Sciecne Final Project
 
-#Problem Description
+# Problem Description
 I am now playing a game called 'warframe', and there is a trading webside for this game named 'warframe markect'(https://warframe.market/).
 
 Suppose I want to buy a equipment called 'Volt Prime' from another players, as well as looking through the trading information on the website, using a scrapy seems to be a good choice to do so.
 
 Here is the python code.
 
-#Part1 Data Collection
+# Part1 Data Collection
 ## Step1 Data Scrapy
 
 Open the Jupyter notebook and import scrapy modules like 'requests', 'html' and 'bs4'.
@@ -88,7 +88,7 @@ At last, store the talbe as a csv file.
 trading.to_csv('Volt Prime.csv')
 ```
 
-##Step3 Data Organization
+## Step3 Data Organization
 
 Now, I want to know the orders of seller. Thus, we can build a new table to select the rows needed. 
 ```pythonscript
@@ -105,7 +105,7 @@ for i in csvx_list:
 ```
 
 
-#Part2 Nerual Network Model
+# Part2 Nerual Network Model
 ## Step1 Build Training Dateset
 ```pythonscript
 training = pd.read_csv('warframe_data.csv')
@@ -214,7 +214,7 @@ torch.save(mnet.state_dict(),'DNN_model.pth')
 ```
 
 
-#Part3 Test and Comparation
+# Part3 Test and Comparation
 ## Step1 Build Test Dataset
 ```pythonscript
 testing = pd.read_csv('Warframe_Test.csv')
