@@ -1,4 +1,4 @@
-# DNN Nerual Network for 'Warframe' Price Prediction
+# DNN Neural Network for 'Warframe' Price Prediction
 
 by Yancheng Zhu(yz3365) & Shili Wu(sw3302)
 
@@ -103,17 +103,17 @@ trading=Table().with_columns('time',time,'volume',volume,'min_price',min_price,'
 ```
 Store the talbe as a csv file.
 ```pythonscript
-trading.to_csv('Volt Prime.csv')
+trading.to_csv('Nova Prime.csv')
 ```
 
 ## Step3 Data Organization
 
-Now, I want to know the orders of seller. Thus, we can build a new table to select the rows needed. 
+After collecting 15 kinds of products to build training data set, we need to combine these 15 csv files as one. 
+Here is a module named 'glob' that can help us. 
 ```pythonscript
 import glob
 ```
-or I would like to know the sellers that are online right now.
-
+Then, we  got a trainging dataset named 'training_data.csv', with 1336 rows of trading information.
 ```pythonscript
 csvx_list = glob.glob('*.csv')
 for i in csvx_list:
@@ -124,13 +124,15 @@ for i in csvx_list:
 
 # Part2 Nerual Network Model
 ## Step1 Build Training Dateset
+Import the training dataset 'warframe_data.csv' as a 'dataframe' structure, and then transform it to a 'table' structure. 
 ```pythonscript
 training = pd.read_csv('warframe_data.csv')
 Train=Table.from_df(training)
 Train
 ```
-
-training table
+I have to mention that the we add many other features based on the market and players' daily comments,
+like the easiness to get the item, the price of the raw material needed, the level of demanding and so on. 
+These can help us training the DNN model better. So now we have 7 features as the input of DNN.
 
 ```pythonscript
 features_training=[]
@@ -145,7 +147,7 @@ for i in range(1335):
     feature1.append(Train.row(i)[13])
     features_training.append(feature1)
 ```
-
+And we choose to predict the ave_price and daily trading volume of the product. So, there are 2 labels as the output.
 
 ```pythonscript
 labels_training=[]
@@ -156,7 +158,7 @@ for i in range(1335):
     labels_training.append(label)
 ```
 ## Step2 DNN Model 
-
+Pytorch is a neural network design module developed by Facebook. Import the module and its function to build dataset.
 ```pythonscript
 import torch 
 from torch.utils import data 
@@ -169,6 +171,9 @@ from torch.autograd import Variable
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 ```
+ DNN structure: 1 input layer(7 cells), 2 hiden layer(24 and 12 cells), 1 output layer(2 cells).
+
+Activation function: leaky_relu
 
 ```pythonscript
 class Net(nn.Module):
@@ -183,6 +188,7 @@ class Net(nn.Module):
         x = self.fc3(x)
         return x
 ```
+Build dataset as pytorch module requied.
 
 ```pythonscript
 class MyDataset(Dataset):
@@ -197,7 +203,7 @@ class MyDataset(Dataset):
         label=self.labels[idx]
         return {'feature':feature, 'label':label}
 ```
-
+Define the training epoch.
 ```pythonscript
 def train_epoch(loader):
     total_loss=0.0
@@ -213,19 +219,26 @@ def train_epoch(loader):
     print ('loss', total_loss/i)
 ```
 ## Step3 Training DNN Model 
+Define the loss function as Mean Square Error (MSE).
+Choose SGD as optimizer with 0.01 learning rate.
+Momentum is a parameter to avoid local optimal.
+Weight_decay is designed to avoid overfit.
+
 ```pythonscript
 mnet=Net()
 loss_fn=torch.nn.MSELoss()
 optimizer=torch.optim.SGD(mnet.parameters(),lr=0.0001,momentum=0.01,weight_decay=1e-8)
+```
 
+Batch size represent the size of dataset each time provided for DNN to get loss and optimization.
+The epoch time is 2000.
+```pythonscript
 dataset=MyDataset(np.asarray(labels_training),np.asarray(features_training))
 load=DataLoader(dataset,shuffle=True,batch_size=100)
-
 for epoch in range(2000):
     train_epoch(load)
 ```
-
-
+Save the model after training done.
 ```pythonscript
 torch.save(mnet.state_dict(),'DNN_model.pth')
 ```
