@@ -1,9 +1,20 @@
-# Data Sciecne Final Project
+# DNN Nerual Network for 'Warframe' Price Prediction
+
+by Yancheng Zhu(yz3365) & Shili Wu(sw3302)
 
 # Problem Description
-I am now playing a game called 'warframe', and there is a trading webside for this game named 'warframe markect'(https://warframe.market/).
+We are now playing a game called 'warframe', and there is a trading webside for this game named 'warframe markect'(https://warframe.market/).
 
-Suppose I want to buy a equipment called 'Volt Prime' from another players, as well as looking through the trading information on the website, using a scrapy seems to be a good choice to do so.
+Suppose that I'm a businessman who want to know how products' price would change in the future, it would be very 
+helpful for making trading strategy if I have a good model to predict the price.
+
+Artificial neural network is data-driven and self-adaptive in nature to solve the problem existing in the classical
+time series prediction. The desired model is adaptively formed based on the features presented from the data. 
+The most widely used one in the forecasting problems are the multi-layer perceptrons(MLPs), which the network
+is consist of at least three layers- input, one or more hidden and output layer. 
+
+Based on the trading data collected from the website, we would like to build a DNN model to predict products' price
+in 3 month. 
 
 Here is the python code.
 
@@ -39,12 +50,20 @@ import json
 import pandas as pd
 from pandas.io.json import json_normalize
 ```
-
 ```pythonscript
 data=json.loads(trade)
-data1=data['payload']['orders']
+data1=data['payload']['statistics_closed']['90days']
 ```
-So, here data1 is the dictionary I need as trading information. The next step is to read it and generate a table to store the things I am interested in.
+So, here data1 is a dictionary I need as trading information. The details of its element can be shown as follows:
+
+[{'datetime': '2019-02-09T00:00:00.000+00:00', 'volume': 95, 'min_price': 100, 'max_price': 120, 'open_price':
+110, 'closed_price': 120, 'avg_price': 110.0, 'wa_price': 109.379, 'median': 110, 'moving_avg': 114.6, 'donch_top':
+130, 'donch_bot': 100, 'id': '5c5f6a863ae3e80024bca024'}, {'datetime': '2019-02-10T00:00:00.000+00:00', 'volume':
+62, 'min_price': 100, 'max_price': 120, 'open_price': 110, 'closed_price': 120, 'avg_price': 110.0, 'wa_price':
+10
+
+
+The next step is to read it and generate a table to store the things I am interested in.
 
 Import data science modules.
 ```pythonscript
@@ -56,8 +75,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 plt.style.use('fivethirtyeight')
 ```
-Then, choose the information I need. Assume I want to know the player's gameID, the price, the region and so on, creat several arrays to store them.
-
+Then, choose the information I need. Assume I want to know the max_price, avg_prive, trading volume and so on, 
+creat several arrays to store them.
 ```pythonscript
 time=np.array([])
 volume=np.array([])
@@ -67,9 +86,9 @@ avg_price=np.array([])
 median_price=np.array([])
 warframe=np.array([])
 ```
-Read the dictionary to input elements. Here I plan to get 400 orders.
+Read the dictionary to input elements. Here I plan to get 90 orders for one kind of product called 'Nova'.
 ```pythonscript
-for i in range (0,89):
+for i in range (0,90):
     time=np.append(time,data1[i]['datetime'][0:10])
     volume=np.append(volume,data1[i]['volume'])
     min_price=np.append(min_price,data1[i]['min_price'])
@@ -82,8 +101,7 @@ Finally, we generate the table with these arrays.
 ```pythonscript
 trading=Table().with_columns('time',time,'volume',volume,'min_price',min_price,'max_price',max_price,'avg_price',avg_price,'median_price',median_price,'warframe',warframe)
 ```
-At last, store the talbe as a csv file.
-
+Store the talbe as a csv file.
 ```pythonscript
 trading.to_csv('Volt Prime.csv')
 ```
@@ -103,7 +121,6 @@ for i in csvx_list:
     with open('training_data.csv','a') as f:
         f.write(fr)
 ```
-
 
 # Part2 Nerual Network Model
 ## Step1 Build Training Dateset
@@ -315,3 +332,4 @@ plt.legend()
 plt.grid(True,linestyle = "-",color = 'gray' ,linewidth = '0.15',axis='both')
 plt.show()
 ```
+
