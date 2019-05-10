@@ -103,7 +103,7 @@ trading=Table().with_columns('time',time,'volume',volume,'min_price',min_price,'
 ```
 ![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/Scrapy.png)
 
-Store the talbe as a csv file.
+Store the table as a csv file.
 ```pythonscript
 trading.to_csv('Nova Prime.csv')
 ```
