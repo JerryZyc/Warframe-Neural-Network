@@ -101,6 +101,8 @@ Finally, we generate the table with these arrays.
 ```pythonscript
 trading=Table().with_columns('time',time,'volume',volume,'min_price',min_price,'max_price',max_price,'avg_price',avg_price,'median_price',median_price,'warframe',warframe)
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/SVR.png)
+
 Store the talbe as a csv file.
 ```pythonscript
 trading.to_csv('Nova Prime.csv')
