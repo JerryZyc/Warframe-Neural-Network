@@ -29,6 +29,7 @@ from lxml import etree
 import xml
 import requests
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/Nova.png)
 
 Next, open the webside for trading a 'Nova Prime'(https://warframe.market/items/nova_prime_set) and 
 view the source. Copy the url of the website to creat a request.get.
