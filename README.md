@@ -101,7 +101,7 @@ Finally, we generate the table with these arrays.
 ```pythonscript
 trading=Table().with_columns('time',time,'volume',volume,'min_price',min_price,'max_price',max_price,'avg_price',avg_price,'median_price',median_price,'warframe',warframe)
 ```
-![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/SVR.png)
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/Scrapy.png)
 
 Store the talbe as a csv file.
 ```pythonscript
@@ -132,6 +132,8 @@ training = pd.read_csv('warframe_data.csv')
 Train=Table.from_df(training)
 Train
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/Train.png)
+
 I have to mention that the we add many other features based on the market and players' daily comments,
 like the easiness to get the item, the price of the raw material needed, the level of demanding and so on. 
 These can help us training the DNN model better. So now we have 7 features as the input of DNN.
@@ -319,6 +321,7 @@ plt.legend()
 plt.grid(True,linestyle = "-",color = 'gray' ,linewidth = '0.15',axis='both')
 plt.show()
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/DNN.png)
 
 ## Step3 Test SVR Model
 Support vector machines (SVMs) are a set of supervised learning methods used for classification, regression and outliers detection.
@@ -354,3 +357,4 @@ plt.legend()
 plt.grid(True,linestyle = "-",color = 'gray' ,linewidth = '0.15',axis='both')
 plt.show()
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/SVR.png)
