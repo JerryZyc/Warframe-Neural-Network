@@ -223,6 +223,8 @@ def train_epoch(loader):
         optimizer.step()
     print ('loss', total_loss/i)
 ```
+![image](https://github.com/JerryZyc/Warframe-Neural-Network/blob/master/DNN_loss.png)
+
 ## Step3 Training DNN Model 
 Define the loss function as Mean Square Error (MSE).
 Choose SGD as optimizer with 0.01 learning rate.
